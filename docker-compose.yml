@@ -1,8 +1,27 @@
 services:
   nginx:
-    image: zak
-    build: .
+    image: nginxweb
+    build: ./nginx
+    container_name: nginx
     ports:
-      - "80:80"
+      - "443:8086"
     environment:
-      - NGINX_PORT=8086
+      - PORT=8086
+    networks:
+      - mynet
+  apache:
+    image: apacheweb
+    build: ./apache
+    container_name: apache
+    networks:
+      - mynet
+  gows:
+    image: gows
+    build: ./goback
+    container_name: gows
+    networks:
+      - mynet
+
+
+networks:
+  mynet:
