@@ -3,7 +3,6 @@
 !*.*
 .*
 !.gitignore
-raft
 !nginx
 !task13/nginx
 *.pem
