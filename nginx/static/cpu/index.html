@@ -1,0 +1,12 @@
+<body>
+  <div>загрузка cpu:</div>
+  <div id="di"></div>
+<script>
+const wss = new WebSocket("wss://"+location.hostname+"/ws");
+
+wss.onmessage = (event) => {
+        console.log(event.data)
+        document.getElementById("di").innerHTML = `<p>${event.data}</p>`;
+};
+</script>
+</body>

@@ -1,0 +1,37 @@
+include /etc/nginx/conf.d/backend.conf;    
+
+upstream redblue{
+        server 127.0.0.1:8081;
+        server 127.0.0.1:8085;
+}
+
+server {
+    listen  ${PORT} ssl;
+    ssl_certificate     /etc/cert/ca-cert.pem;
+    ssl_certificate_key /etc/cert/ca-key.pem;
+
+    location /ws {
+        proxy_pass http://gows:8030/ws;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_read_timeout 86400;
+
+	}
+
+
+    location /redblue {
+            proxy_pass http://redblue/redblue/;
+        }
+
+        location /search {
+          proxy_pass https://google.com;
+        }
+
+        location /api {
+          proxy_set_header 	X-Real-IP 		    $remote_addr;
+          proxy_set_header Host $host;
+          proxy_pass http://127.0.0.1:8040/;
+        }
+      }
+

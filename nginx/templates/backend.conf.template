@@ -1,0 +1,15 @@
+server {
+        listen 8081;
+        location /redblue {
+            alias /usr/share/nginx/redblue;  
+            index red.html;  
+        }
+}
+
+server {
+        listen 8085;
+        location /redblue {
+            alias /usr/share/nginx/redblue;
+            index blud.html;
+        }
+}

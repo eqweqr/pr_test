@@ -1,0 +1,39 @@
+<body>
+<ul>
+  <!-- <li> -->
+    <!-- <a id=href="https://leohoyt.zapto.org/info">info</a> -->
+
+  <!-- </li> -->
+  <li>
+    <a id="cpu">cpu_usage</a>
+
+  </li>
+  <li>
+    <a id="music">music</a>
+
+  </li>
+  <li>
+    <a id="apache">img</a>
+  </li>
+  <li>
+    <a id="search">
+      search
+    </a>
+
+    <a id="redblue">
+      redblue
+    </a>
+  </li>
+</ul>
+
+<script>
+  const hostname = location.hostname;
+  document.getElementById("redblue").href = "https://"+hostname+"/redblue/"
+  document.getElementById("cpu").href = "https://"+hostname+"/api/cpu/"
+  document.getElementById("apache").href = "https://"+hostname+"/api/apache.jpeg"
+  document.getElementById("search").href = "https://"+hostname+"/search"
+  document.getElementById("music").href = "https://"+hostname+"/api/Thema.mp4"
+
+</script>
+
+</body>
