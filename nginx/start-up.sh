@@ -5,7 +5,7 @@ set -e
 
 # /home/main &
 # /etc/cert/cre.sh
-
+ls /etc/cert
 
 if [ -z "${NGINX_ENTRYPOINT_QUIET_LOGS:-}" ]; then
     exec 3>&1

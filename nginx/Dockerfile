@@ -7,9 +7,8 @@
 # RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 FROM alpine/openssl as builder
 COPY cert /etc/cert
-RUN ls /etc/cert
+WORKDIR /etc/cert
 RUN /etc/cert/cre.sh
-RUN ls /etc/cert
 
 FROM nginx:1.19.6-alpine
 
