@@ -9,18 +9,32 @@ services:
       - PORT=8086
     networks:
       - mynet
+
   apache:
     image: apacheweb
     build: ./apache
     container_name: apache
     networks:
       - mynet
+
   gows:
     image: gows
     build: ./goback
     container_name: gows
     networks:
       - mynet
+
+  postgresql:
+    image: postgres
+    container_name: postgresql
+    restart: always 
+    env_file:
+      - .env 
+    # ports:
+      # - ${POSTGRES_PORT}:5432
+    volumes:
+      #- ./postgres/data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 
 networks:

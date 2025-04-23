@@ -25,8 +25,15 @@
     </a>
   </li>
 </ul>
+<div>
+  <button onclick="foo()"></button>
+  <div id="text"></div>
+</div>
 
 <script>
+  function foo() {
+    fetch('https://'+hostname+'/auth', {}).then(response => response.text()).then(text => document.getElementById("text").innerHTML=`<p>${text}</p>`)
+  }
   const hostname = location.hostname;
   document.getElementById("redblue").href = "https://"+hostname+"/redblue/"
   document.getElementById("cpu").href = "https://"+hostname+"/api/cpu/"
@@ -35,5 +42,6 @@
   document.getElementById("music").href = "https://"+hostname+"/api/Thema.mp4"
 
 </script>
+
 
 </body>
