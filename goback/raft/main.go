@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/shirou/gopsutil/cpu"
 )
@@ -60,31 +60,41 @@ func handleMessage(msg []byte) {
 
 func main() {
 	r := mux.NewRouter()
-	db_name := os.Getenv("POSTGRES_DB")
-	user_name := os.Getenv("POSTGRES_USER")
-	pass := os.Getenv("POSTGRES_PASSWORD")
+	envFile, _ := godotenv.Read("/home/.env")
+	db_name := envFile["POSTGRES_DB"]
+	user_name := envFile["POSTGRES_USER"]
+	pass := envFile["POSTGRES_PASSWORD"]
+
 	// root_pass := os.Getenv("POSTGRES_ROOT_PASSWORD")
-	port := os.Getenv("POSTGRES_PORT")
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable", "postgresql", port, user_name, pass, db_name)
+	// port := os.Getenv("POSTGRES_PORT")
 	type User struct {
 		Id   int    `db:"id"`
 		Name string `db:"name"`
 	}
 	r.HandleFunc("/ws", wsEndpoint)
 	r.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
-		db, err := sql.Open("postgres", psqlInfo)
+		info := fmt.Sprintf("postgres://%s:%s@%s:5432/%s?sslmode=%s", user_name, pass, "postgresql", db_name, "disable")
+		fmt.Println(info)
+		db, err := sql.Open("postgres", info)
 		if err != nil {
 			panic(err)
 		}
 		defer db.Close()
+
+		if err := db.Ping(); err != nil {
+			fmt.Println(err)
+			fmt.Println("cant ping")
+			db.Close()
+		}
+
 		user := User{}
-		rows := db.QueryRow("Select id, username from role")
-		err = rows.Scan(&user)
+		err = db.QueryRow("Select id, name from role where id=$1", 0).Scan(&user.Id, &user.Name)
+		// err = rows.Scan(&user)
 		if err != nil {
 			panic(err)
 		}
+		fmt.Println(user.Name)
 		fmt.Fprint(w, user.Name)
-
 	})
 	log.Fatal(http.ListenAndServe(":8030", r))
 }
