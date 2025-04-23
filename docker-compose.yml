@@ -38,6 +38,9 @@ services:
     container_name: gows
     networks:
       - mynet
+    volumes:
+        #- ./postgres/data:/var/lib/postgresql/data
+      - /tmp/checkout/.env:/home/.env
 
 
 networks:
