@@ -10,6 +10,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	_ "github.com/lib/pq"
 	"github.com/shirou/gopsutil/cpu"
 )
 
